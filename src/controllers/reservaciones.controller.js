@@ -1,3 +1,4 @@
+//@ts-check
 import { pool } from "../db.js";
 
 export const createReservacion = async (req, res) => {
