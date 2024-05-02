@@ -4,6 +4,7 @@ import cors from 'cors';
 import userroutes from "./routes/user.routes.js";
 import garajeRoutes from './routes/garajes.routes.js';
 import autoRoutes from './routes/auto.routes.js';
+import reservacionesRoutes from './routes/reservaciones.routes.js';
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors());
 
 app.use(userroutes);
 
+app.use('/reservaciones', reservacionesRoutes);
 app.use('/garajes', garajeRoutes);
 app.use('/autos', autoRoutes);
 
