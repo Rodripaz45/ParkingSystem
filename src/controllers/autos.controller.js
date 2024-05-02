@@ -27,3 +27,65 @@ export const addAuto = async (req, res) => {
         res.status(500).send('Error en el servidor');
     }
 };
+// Obtener todos los autos
+export const getAllAutos = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM autos');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error al obtener autos:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};
+
+// Obtener un auto por ID
+export const getAutoById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('SELECT * FROM autos WHERE id = $1', [id]);
+        if (result.rows.length > 0) {
+            res.json(result.rows[0]);
+        } else {
+            res.status(404).send('Auto no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al obtener auto:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};
+
+// Actualizar un auto
+export const updateAuto = async (req, res) => {
+    const { id } = req.params;
+    const { placa, modelo, dimensiones } = req.body;
+    try {
+        const result = await pool.query(
+            'UPDATE autos SET placa = $1, modelo = $2, dimensiones = $3 WHERE id = $4 RETURNING *',
+            [placa, modelo, dimensiones, id]
+        );
+        if (result.rows.length > 0) {
+            res.json({ message: 'Auto actualizado correctamente', auto: result.rows[0] });
+        } else {
+            res.status(404).send('Auto no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al actualizar auto:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};
+
+// Eliminar un auto
+export const deleteAuto = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('DELETE FROM autos WHERE id = $1 RETURNING *', [id]);
+        if (result.rows.length > 0) {
+            res.json({ message: 'Auto eliminado correctamente' });
+        } else {
+            res.status(404).send('Auto no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al eliminar auto:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};

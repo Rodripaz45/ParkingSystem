@@ -21,4 +21,67 @@ export const addGaraje = async (req, res) => {
         }
     }
 };
+// Obtener todos los garajes
+export const getAllGarajes = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM garajes');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error al obtener garajes:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};
+
+// Obtener un garaje por ID
+export const getGarajeById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('SELECT * FROM garajes WHERE id = $1', [id]);
+        if (result.rows.length > 0) {
+            res.json(result.rows[0]);
+        } else {
+            res.status(404).send('Garaje no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al obtener garaje:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};
+
+// Actualizar un garaje
+export const updateGaraje = async (req, res) => {
+    const { id } = req.params;
+    const { direccion, lat, lng, dimensiones, caracteristicasAdicionales, disponibilidad } = req.body;
+    try {
+        const result = await pool.query(
+            'UPDATE garajes SET direccion = $1, lat = $2, lng = $3, dimensiones = $4, caracteristicas_adicionales = $5, disponibilidad = $6 WHERE id = $7 RETURNING *',
+            [direccion, lat, lng, dimensiones, caracteristicasAdicionales, disponibilidad, id]
+        );
+        if (result.rows.length > 0) {
+            res.json({ message: 'Garaje actualizado correctamente', garaje: result.rows[0] });
+        } else {
+            res.status(404).send('Garaje no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al actualizar garaje:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};
+
+// Eliminar un garaje
+export const deleteGaraje = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('DELETE FROM garajes WHERE id = $1 RETURNING *', [id]);
+        if (result.rows.length > 0) {
+            res.json({ message: 'Garaje eliminado correctamente' });
+        } else {
+            res.status(404).send('Garaje no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al eliminar garaje:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};
+
 
