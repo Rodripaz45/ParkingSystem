@@ -37,15 +37,15 @@ export const login = async (req, res) => {
                 res.json({ id: user.id, message: 'Inicio de sesión exitoso' });
             } else {
                 // Si las contraseñas no coinciden, devuelve un mensaje de error
-                res.status(404).send('Credenciales incorrectas');
+                res.status(404).send({message: 'Credenciales invalidas'});
             }
         } else {
             // No se encontró ningún usuario con ese email
-            res.status(404).send('Credenciales incorrectas');
+            res.status(404).send({message: 'Credenciales invalidas'});
         }
     } catch (error) {
         // Manejo de errores
         console.error('Error en la consulta SQL:', error);
-        res.status(500).send('Error en el servidor');
+        res.status(500).send({message: 'Error en el servidor'});
     }
 };
