@@ -1,5 +1,6 @@
+//@ts-check
 import { Router } from "express";
-import { addAuto } from "../controllers/autos.controller.js";
+import { addAuto, deleteAuto, getAllAutos, getAutoById, updateAuto } from "../controllers/autos.controller.js";
 
 const router = Router();
 

@@ -1,3 +1,5 @@
+//@ts-check
+
 import { pool } from "../db.js";
 
 export const addGaraje = async (req, res) => {

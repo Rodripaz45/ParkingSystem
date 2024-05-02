@@ -1,5 +1,6 @@
+//@ts-check
 import { Router } from "express";
-import { addGaraje } from "../controllers/garajes.controller.js";
+import { addGaraje, deleteGaraje, getAllGarajes, getGarajeById, updateGaraje } from "../controllers/garajes.controller.js";
 
 const router = Router();
 

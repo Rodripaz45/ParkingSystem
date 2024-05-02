@@ -1,19 +1,7 @@
+//@ts-check
 import { pool } from "../db.js";
 
-import { check, validationResult } from 'express-validator';
-
-export const validateAuto = [
-    check('placa').isLength({ min: 6 }).withMessage('La placa debe tener al menos 6 caracteres'),
-    check('modelo').not().isEmpty().withMessage('El modelo es requerido'),
-    check('dimensiones').not().isEmpty().withMessage('Las dimensiones son requeridas')
-];
-
 export const addAuto = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
     const { placa, modelo, dimensiones, usuarioId } = req.body;
     try {
         const result = await pool.query(
@@ -27,6 +15,7 @@ export const addAuto = async (req, res) => {
         res.status(500).send('Error en el servidor');
     }
 };
+
 // Obtener todos los autos
 export const getAllAutos = async (req, res) => {
     try {

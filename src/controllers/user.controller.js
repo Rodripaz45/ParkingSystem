@@ -1,3 +1,4 @@
+//@ts-check
 import { pool } from "../db.js";
 import bcrypt from 'bcrypt';
 
