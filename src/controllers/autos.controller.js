@@ -5,7 +5,7 @@ export const addAuto = async (req, res) => {
     const { placa, modelo, dimensiones, usuarioId } = req.body;
     try {
         const result = await pool.query(
-            'INSERT INTO autos (placa, modelo, dimensiones, usuario_id) VALUES ($1, $2, $3, $4) RETURNING id',
+            'INSERT INTO autos (fk_id_usuario, placa, modelo, dimensiones) VALUES ($1, $2, $3, $4) RETURNING id_auto',
             [placa, modelo, dimensiones, usuarioId]
         );
         const autoId = result.rows[0].id;
@@ -31,7 +31,7 @@ export const getAllAutos = async (req, res) => {
 export const getAutoById = async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await pool.query('SELECT * FROM autos WHERE id = $1', [id]);
+        const result = await pool.query('SELECT * FROM autos WHERE id_auto = $1', [id]);
         if (result.rows.length > 0) {
             res.json(result.rows[0]);
         } else {
@@ -49,7 +49,7 @@ export const updateAuto = async (req, res) => {
     const { placa, modelo, dimensiones } = req.body;
     try {
         const result = await pool.query(
-            'UPDATE autos SET placa = $1, modelo = $2, dimensiones = $3 WHERE id = $4 RETURNING *',
+            'UPDATE autos SET placa = $1, modelo = $2, dimensiones = $3 WHERE id_auto = $4 RETURNING *',
             [placa, modelo, dimensiones, id]
         );
         if (result.rows.length > 0) {
@@ -67,7 +67,7 @@ export const updateAuto = async (req, res) => {
 export const deleteAuto = async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await pool.query('DELETE FROM autos WHERE id = $1 RETURNING *', [id]);
+        const result = await pool.query('DELETE FROM autos WHERE id_auto = $1 RETURNING *', [id]);
         if (result.rows.length > 0) {
             res.json({ message: 'Auto eliminado correctamente' });
         } else {

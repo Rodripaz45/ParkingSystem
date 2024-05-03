@@ -9,7 +9,7 @@ export const addGaraje = async (req, res) => {
     }
     try {
         const result = await pool.query(
-            'INSERT INTO garajes (direccion, lat, lng, dimensiones, caracteristicas_adicionales, disponibilidad, usuario_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
+            'INSERT INTO garajes (fk_id_usuario, direccion, lat, lng, dimensiones, caracteristicasadicionales, disponibilidad) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id_garaje',
             [direccion, lat, lng, dimensiones, caracteristicasAdicionales, disponibilidad, usuarioId]
         );
         const garajeId = result.rows[0].id;
@@ -38,7 +38,7 @@ export const getAllGarajes = async (req, res) => {
 export const getGarajeById = async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await pool.query('SELECT * FROM garajes WHERE id = $1', [id]);
+        const result = await pool.query('SELECT * FROM garajes WHERE id_garaje = $1', [id]);
         if (result.rows.length > 0) {
             res.json(result.rows[0]);
         } else {
@@ -56,7 +56,7 @@ export const updateGaraje = async (req, res) => {
     const { direccion, lat, lng, dimensiones, caracteristicasAdicionales, disponibilidad } = req.body;
     try {
         const result = await pool.query(
-            'UPDATE garajes SET direccion = $1, lat = $2, lng = $3, dimensiones = $4, caracteristicas_adicionales = $5, disponibilidad = $6 WHERE id = $7 RETURNING *',
+            'UPDATE garajes SET direccion = $1, lat = $2, lng = $3, dimensiones = $4, caracteristicasadicionales = $5, disponibilidad = $6 WHERE id_garaje = $7 RETURNING *',
             [direccion, lat, lng, dimensiones, caracteristicasAdicionales, disponibilidad, id]
         );
         if (result.rows.length > 0) {
@@ -74,7 +74,7 @@ export const updateGaraje = async (req, res) => {
 export const deleteGaraje = async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await pool.query('DELETE FROM garajes WHERE id = $1 RETURNING *', [id]);
+        const result = await pool.query('DELETE FROM garajes WHERE id_garaje = $1 RETURNING *', [id]);
         if (result.rows.length > 0) {
             res.json({ message: 'Garaje eliminado correctamente' });
         } else {
