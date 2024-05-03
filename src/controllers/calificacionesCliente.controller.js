@@ -5,7 +5,7 @@ export const createCalificacionCliente = async (req, res) => {
     const { fk_id_usuario, calificacion } = req.body;
     try {
         const result = await pool.query(
-            'INSERT INTO calificacion_cliente (fk_id_usuario, calificacion) VALUES ($1, $2) RETURNING id',
+            'INSERT INTO calificacion_cliente (fk_id_usuario, calificacion) VALUES ($1, $2) RETURNING id_calificacion_cliente',
             [fk_id_usuario, calificacion]
         );
         const calificacionId = result.rows[0].id;
@@ -31,7 +31,7 @@ export const updateCalificacionCliente = async (req, res) => {
     const { calificacion } = req.body;
     try {
         const result = await pool.query(
-            'UPDATE calificacion_cliente SET calificacion = $1 WHERE id = $2 RETURNING *',
+            'UPDATE calificacion_cliente SET calificacion = $1 WHERE id_calificacion_cliente = $2 RETURNING *',
             [calificacion, id]
         );
         if (result.rows.length > 0) {
@@ -48,7 +48,7 @@ export const updateCalificacionCliente = async (req, res) => {
 export const deleteCalificacionCliente = async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await pool.query('DELETE FROM calificacion_cliente WHERE id = $1 RETURNING *', [id]);
+        const result = await pool.query('DELETE FROM calificacion_cliente WHERE id_calificacion_cliente = $1 RETURNING *', [id]);
         if (result.rows.length > 0) {
             res.json({ message: 'Calificación eliminada correctamente' });
         } else {
