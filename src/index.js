@@ -16,7 +16,7 @@ app.use(express.json());
 // Configuración de CORS
 app.use(cors());
 
-app.use(userroutes);
+app.use('/users',userroutes);
 
 app.use('/reservaciones', reservacionesRoutes);
 app.use('/garajes', garajeRoutes);

@@ -10,7 +10,7 @@ export const addGaraje = async (req, res) => {
     try {
         const result = await pool.query(
             'INSERT INTO garajes (fk_id_usuario, direccion, lat, lng, dimensiones, caracteristicasadicionales, disponibilidad) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id_garaje',
-            [direccion, lat, lng, dimensiones, caracteristicasAdicionales, disponibilidad, usuarioId]
+            [usuarioId, direccion, lat, lng, dimensiones, caracteristicasAdicionales, disponibilidad]
         );
         const garajeId = result.rows[0].id;
         res.status(201).json({ id: garajeId, message: 'Garaje agregado correctamente' });

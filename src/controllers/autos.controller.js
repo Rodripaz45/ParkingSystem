@@ -6,7 +6,7 @@ export const addAuto = async (req, res) => {
     try {
         const result = await pool.query(
             'INSERT INTO autos (fk_id_usuario, placa, modelo, dimensiones) VALUES ($1, $2, $3, $4) RETURNING id_auto',
-            [placa, modelo, dimensiones, usuarioId]
+            [usuarioId, placa, modelo, dimensiones]
         );
         const autoId = result.rows[0].id;
         res.status(201).json({ id: autoId, message: 'Auto registrado correctamente' });
