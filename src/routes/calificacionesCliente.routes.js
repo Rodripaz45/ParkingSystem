@@ -1,6 +1,6 @@
 //@ts-check
 import { Router } from "express";
-import { createCalificacionCliente, getAllCalificacionesCliente, updateCalificacionCliente, deleteCalificacionCliente } from "../controllers/calificacionesCliente.controller.js";
+import { createCalificacionCliente, getAllCalificacionesCliente, updateCalificacionCliente, deleteCalificacionCliente, getAverageCalificacionCliente } from "../controllers/calificacionesCliente.controller.js";
 
 const router = Router();
 
@@ -9,5 +9,7 @@ router.get('/getAllCalificacionesCliente', getAllCalificacionesCliente);
 
 router.put('/updateCalificacionCliente/:id', updateCalificacionCliente);
 router.delete('/deleteCalificacionCliente/:id', deleteCalificacionCliente);
+
+router.get('/average/:fk_id_usuario', getAverageCalificacionCliente);
 
 export default router;

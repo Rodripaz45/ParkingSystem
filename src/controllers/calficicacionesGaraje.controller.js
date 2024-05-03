@@ -59,3 +59,23 @@ export const deleteCalificacionGaraje = async (req, res) => {
         res.status(500).send('Error en el servidor');
     }
 };
+
+export const getAverageCalificacionGaraje = async (req, res) => {
+    const { fk_id_garaje } = req.params;
+
+    try {
+        const result = await pool.query(
+            'SELECT AVG(calificacion) as average FROM calificacion_garaje WHERE fk_id_garaje = $1',
+            [fk_id_garaje]
+        );
+        if (result.rows.length > 0 && result.rows[0].average !== null) {
+            const average = parseFloat(result.rows[0].average).toFixed(2); // Formatea el promedio a dos decimales
+            res.json({ fk_id_garaje, average, message: 'Promedio de calificaciones obtenido correctamente' });
+        } else {
+            res.status(404).send('No se encontraron calificaciones para este garaje');
+        }
+    } catch (error) {
+        console.error('Error al obtener el promedio de calificaciones:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};

@@ -59,3 +59,22 @@ export const deleteCalificacionCliente = async (req, res) => {
         res.status(500).send('Error en el servidor');
     }
 };
+
+export const getAverageCalificacionCliente = async (req, res) => {
+    const { fk_id_usuario } = req.params;
+    try {
+        const result = await pool.query(
+            'SELECT AVG(calificacion) as average FROM calificacion_cliente WHERE fk_id_usuario = $1',
+            [fk_id_usuario]
+        );
+        if (result.rows.length > 0 && result.rows[0].average !== null) {
+            const average = parseFloat(result.rows[0].average).toFixed(2); // Formatea el promedio a dos decimales
+            res.json({ fk_id_usuario, average, message: 'Promedio de calificaciones obtenido correctamente' });
+        } else {
+            res.status(404).send('No se encontraron calificaciones para este cliente');
+        }
+    } catch (error) {
+        console.error('Error al obtener el promedio de calificaciones:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};
