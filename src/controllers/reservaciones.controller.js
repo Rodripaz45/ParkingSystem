@@ -5,10 +5,10 @@ export const createReservacion = async (req, res) => {
     const { fk_id_garaje, fk_id_auto, start_time, end_time, horas_disponibles, precio } = req.body;
     try {
         const result = await pool.query(
-            'INSERT INTO reservaciones (fk_id_garaje, fk_id_auto, horainicio, horafin, horasdisponibles, estado, precio) VALUES ($1, $2, $3, $4, $5, "PENDIENTE", $6) RETURNING id_reservacion',
-            [fk_id_garaje, fk_id_auto, start_time, end_time, horas_disponibles, precio]
+            'INSERT INTO reservaciones (fk_id_garaje, fk_id_auto, horainicio, horafin, horasdisponibles, estado, precio) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id_reservacion',
+            [fk_id_garaje, fk_id_auto, start_time, end_time, horas_disponibles, 'PENDIENTE', precio]
         );
-        const reservacionId = result.rows[0].id;
+        const reservacionId = result.rows[0].id_reservacion;
         res.status(201).json({ id: reservacionId, message: 'Reservación creada correctamente' });
     } catch (error) {
         console.error('Error al crear reservación:', error);

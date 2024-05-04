@@ -23,10 +23,17 @@ export const addGaraje = async (req, res) => {
         }
     }
 };
-// Obtener todos los garajes
+
 export const getAllGarajes = async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM garajes');
+        const result = await pool.query(`
+            SELECT g.*,
+                (SELECT AVG(r.precio)
+                 FROM reservaciones r
+                 WHERE r.fk_id_garaje = g.id_garaje AND r.estado = 'CONFIRMADA'
+                ) AS promedio_precio_confirmado
+            FROM garajes g;
+        `);
         res.json(result.rows);
     } catch (error) {
         console.error('Error al obtener garajes:', error);
