@@ -8,6 +8,7 @@ import reservacionesRoutes from './routes/reservaciones.routes.js';
 import calificacionesClienteRoutes from './routes/calificacionesCliente.routes.js';
 import calificacionesPropietarioRoutes from './routes/calificacionesPropietario.routes.js';
 import calificacionesGarajeRoutes from './routes/calificacionesGaraje.routes.js';
+import topsRoutes from './routes/tops.routes.js'
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use('/autos', autoRoutes);
 app.use('/calificacionesCliente', calificacionesClienteRoutes);
 app.use('/calificacionesPropietario', calificacionesPropietarioRoutes);
 app.use('/calificacionesGaraje', calificacionesGarajeRoutes);
+
+app.use('/tops', topsRoutes)
 
 
 
