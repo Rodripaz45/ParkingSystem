@@ -57,6 +57,33 @@ export const getGarajeById = async (req, res) => {
     }
 };
 
+export const getGarajesOcupados = async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM garajes WHERE disponibilidad = $1',
+            ['OCUPADO']
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error al obtener garajes ocupados:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};
+
+export const getGarajesDisponibles = async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM garajes WHERE disponibilidad = $1',
+            ['DISPONIBLE']
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error al obtener garajes disponibles:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};
+
+
 // Actualizar un garaje
 export const updateGaraje = async (req, res) => {
     const { id } = req.params;
@@ -76,6 +103,43 @@ export const updateGaraje = async (req, res) => {
         res.status(500).send('Error en el servidor');
     }
 };
+
+export const setGarajeDisponible = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query(
+            'UPDATE garajes SET disponibilidad = $1 WHERE id_garaje = $2 RETURNING *',
+            ['DISPONIBLE', id]
+        );
+        if (result.rows.length > 0) {
+            res.json({ message: 'Garaje marcado como disponible correctamente', garaje: result.rows[0] });
+        } else {
+            res.status(404).send('Garaje no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al actualizar disponibilidad del garaje:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};
+
+export const setGarajeOcupado = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query(
+            'UPDATE garajes SET disponibilidad = $1 WHERE id_garaje = $2 RETURNING *',
+            ['OCUPADO', id]
+        );
+        if (result.rows.length > 0) {
+            res.json({ message: 'Garaje marcado como ocupado correctamente', garaje: result.rows[0] });
+        } else {
+            res.status(404).send('Garaje no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al actualizar disponibilidad del garaje:', error);
+        res.status(500).send('Error en el servidor');
+    }
+};
+
 
 // Eliminar un garaje
 export const deleteGaraje = async (req, res) => {
