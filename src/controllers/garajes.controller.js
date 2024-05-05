@@ -30,7 +30,7 @@ export const getAllGarajes = async (req, res) => {
             SELECT g.*,
                 (SELECT AVG(r.precio)
                  FROM reservaciones r
-                 WHERE r.fk_id_garaje = g.id_garaje AND r.estado = 'CONFIRMADA'
+                 WHERE r.fk_id_garaje = g.id_garaje AND r.estado = 'CONFIRMADO'
                 ) AS promedio_precio_confirmado
             FROM garajes g;
         `);
