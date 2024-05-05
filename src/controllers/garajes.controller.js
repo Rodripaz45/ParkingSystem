@@ -42,20 +42,21 @@ export const getAllGarajes = async (req, res) => {
 };
 
 // Obtener un garaje por ID
-export const getGarajeById = async (req, res) => {
+export const getGarajesById = async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await pool.query('SELECT * FROM garajes WHERE id_garaje = $1', [id]);
+        const result = await pool.query('SELECT * FROM garajes WHERE fk_id_usuario = $1', [id]);
         if (result.rows.length > 0) {
-            res.json(result.rows[0]);
+            res.json(result.rows);
         } else {
-            res.status(404).send('Garaje no encontrado');
+            res.status(404).send('No se encontraron garajes para este usuario');
         }
     } catch (error) {
-        console.error('Error al obtener garaje:', error);
+        console.error('Error al obtener garajes por usuario:', error);
         res.status(500).send('Error en el servidor');
     }
 };
+
 
 export const getGarajesOcupados = async (req, res) => {
     try {
@@ -156,5 +157,4 @@ export const deleteGaraje = async (req, res) => {
         res.status(500).send('Error en el servidor');
     }
 };
-
 
