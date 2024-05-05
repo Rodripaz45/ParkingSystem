@@ -27,12 +27,13 @@ export const addGaraje = async (req, res) => {
 export const getAllGarajes = async (req, res) => {
     try {
         const result = await pool.query(`
-            SELECT g.*,
+            SELECT g.*, u.telefono,
                 (SELECT AVG(r.precio)
-                 FROM reservaciones r
-                 WHERE r.fk_id_garaje = g.id_garaje AND r.estado = 'CONFIRMADO'
+                FROM reservaciones r
+                WHERE r.fk_id_garaje = g.id_garaje AND r.estado = 'CONFIRMADO'
                 ) AS promedio_precio_confirmado
-            FROM garajes g;
+            FROM garajes g
+            JOIN usuario u ON g.fk_id_usuario = u.id;
         `);
         res.json(result.rows);
     } catch (error) {
