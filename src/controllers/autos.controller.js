@@ -27,21 +27,17 @@ export const getAllAutos = async (req, res) => {
     }
 };
 
-// Obtener un auto por ID
-export const getAutoById = async (req, res) => {
+export const getAutosById = async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await pool.query('SELECT * FROM autos WHERE id_auto = $1', [id]);
-        if (result.rows.length > 0) {
-            res.json(result.rows[0]);
-        } else {
-            res.status(404).send('Auto no encontrado');
-        }
+        const result = await pool.query('SELECT * FROM autos WHERE fk_id_usuario = $1', [id]);
+        res.json(result.rows);
     } catch (error) {
-        console.error('Error al obtener auto:', error);
+        console.error('Error al obtener autos por ID de usuario:', error);
         res.status(500).send('Error en el servidor');
     }
 };
+
 
 // Actualizar un auto
 export const updateAuto = async (req, res) => {
