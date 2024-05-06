@@ -15,7 +15,7 @@ router.put('/rejectReservacion/:id', rejectReservacion);
 router.put('/cancelReservacion/:id', cancelReservacion);
 router.get('/getReservacionesConfirmadas', getReservacionesConfirmadas);
 router.get('/getReservacionesRechazadas', getReservacionesRechazadas);
-router.get('/getReservacionesPendientes', getReservacionesPendientes);
+router.get('/getReservacionesPendientes/:id', getReservacionesPendientes);
 router.get('/getReservacionesCanceladas', getReservacionesCanceladas);
 router.delete('/deleteReservacion/:id', deleteReservacion);
 

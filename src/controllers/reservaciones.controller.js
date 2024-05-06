@@ -95,17 +95,19 @@ export const getReservacionesRechazadas = async (req, res) => {
 };
 
 export const getReservacionesPendientes = async (req, res) => {
+    const { id } = req.params;
     try {
         const result = await pool.query(
-            'SELECT * FROM reservaciones WHERE estado = $1',
-            ['PENDIENTE']
+            'SELECT * FROM reservaciones WHERE estado = $1 AND fk_id_garaje IN (SELECT id_garaje FROM garajes WHERE fk_id_usuario = $2)',
+            ['PENDIENTE', id]
         );
         res.json(result.rows);
     } catch (error) {
-        console.error('Error al obtener reservaciones pendientes:', error);
+        console.error('Error al obtener reservaciones pendientes por usuario:', error);
         res.status(500).send('Error en el servidor');
     }
 };
+
 
 export const getReservacionesCanceladas = async (req, res) => {
     try {
