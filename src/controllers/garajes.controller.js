@@ -75,7 +75,7 @@ export const getGarajesOcupados = async (req, res) => {
 export const getGarajesDisponibles = async (req, res) => {
     try {
         const result = await pool.query(
-            'SELECT * FROM garajes WHERE disponibilidad = $1',
+            'SELECT g.*, u.telefono FROM garajes g INNER JOIN usuario u ON g.fk_id_usuario = u.id WHERE g.disponibilidad = $1;',
             ['DISPONIBLE']
         );
         res.json(result.rows);
